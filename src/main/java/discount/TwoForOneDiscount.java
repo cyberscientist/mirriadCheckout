@@ -14,7 +14,7 @@ public class TwoForOneDiscount extends Discount {
     long numberItemNeeded;
     List<Item> purchasedItems;
 
-    public TwoForOneDiscount(Set<Item> itemsForDiscount,List<Item> purchasedItems, long numberItemNeeded) {
+    public TwoForOneDiscount(Set<Item> itemsForDiscount, List<Item> purchasedItems, long numberItemNeeded) {
         this.itemsForDiscount = itemsForDiscount;
         this.numberItemNeeded = numberItemNeeded;
         this.purchasedItems = purchasedItems;
@@ -23,8 +23,8 @@ public class TwoForOneDiscount extends Discount {
     @Override
     public boolean isValidForDiscount() {
         Validate.notNull(purchasedItems);
-
-        if ( getNumberOccurrence(purchasedItems) == numberItemNeeded ) {
+//FIXME SHOULD THIS NOT BE > THAN NUMBER OF ITEMS NEEDED???
+        if (getNumberOccurrence(purchasedItems) == numberItemNeeded) {
             return true;
         } else {
             return false;

@@ -33,9 +33,8 @@ public class Item {
         Item item = (Item) o;
 
         if (price != item.price) return false;
-        if (name != null ? !name.equals(item.name) : item.name != null) return false;
+        return !(name != null ? !name.equals(item.name) : item.name != null);
 
-        return true;
     }
 
     @Override
