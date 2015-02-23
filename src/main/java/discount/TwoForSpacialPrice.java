@@ -5,20 +5,18 @@ import item.Item;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by ali on 18/02/15.
- */
 public class TwoForSpacialPrice extends TwoForOneDiscount {
-    private int amountToDeduct;
+    private int amountToDeductForOffer;
+    numberItemNeeded = 2;
 
-    public TwoForSpacialPrice(Set<Item> itemsForDiscount, List<Item> purchasedItems, long numberItemNeeded, int amountToDeduct ) {
-        super(itemsForDiscount, purchasedItems, numberItemNeeded);
-        this.amountToDeduct = amountToDeduct;
+    public TwoForSpacialPrice(Set<Item> itemsForDiscount,int amountToDeductForOffer ) {
+        super(itemsForDiscount);
+        this.amountToDeductForOffer = amountToDeductForOffer;
     }
 
 
     @Override
-    public int getAmountToDeduct() {
-        return amountToDeduct;
+    public int getAmountToDeduct(List<Item> purchasedItems) {
+        return amountToDeductForOffer;
     }
 }

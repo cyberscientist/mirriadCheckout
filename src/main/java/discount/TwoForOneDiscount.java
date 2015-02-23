@@ -7,35 +7,28 @@ import org.apache.commons.lang3.Validate;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by ali on 17/02/15.
- */
 public class TwoForOneDiscount extends Discount {
-    long numberItemNeeded;
-    List<Item> purchasedItems;
+    int numberItemNeeded = 2;
 
-    public TwoForOneDiscount(Set<Item> itemsForDiscount, List<Item> purchasedItems, long numberItemNeeded) {
+    public TwoForOneDiscount(Set<Item> itemsForDiscount) {
         this.itemsForDiscount = itemsForDiscount;
-        this.numberItemNeeded = numberItemNeeded;
-        this.purchasedItems = purchasedItems;
     }
 
     @Override
-    public boolean isValidForDiscount() {
+    public boolean isValidForDiscount( List<Item> purchasedItems) {
         Validate.notNull(purchasedItems);
 //FIXME SHOULD THIS NOT BE > THAN NUMBER OF ITEMS NEEDED???
-        if (getNumberOccurrence(purchasedItems) == numberItemNeeded) {
-            return true;
-        } else {
-            return false;
-        }
+        return getNumberOccurrence(purchasedItems) >= numberItemNeeded;
     }
 
     @Override
-    public int getAmountToDeduct() throws notValidForDiscountException {
+    public int getAmountToDeduct( List<Item> purchasedItems) throws notValidForDiscountException {
+        if(!isValidForDiscount(purchasedItems)) {
+            throw new notValidForDiscountException("This discount is not applicable.");
+        }
         int singleDeduction = itemsForDiscount.stream().findFirst().get().getPrice();
         int numberOfDeduction = (int) (long) getNumberOccurrence(purchasedItems);
 
-        return singleDeduction * numberOfDeduction;
+        return singleDeduction * (numberOfDeduction/numberItemNeeded);
     }
 }

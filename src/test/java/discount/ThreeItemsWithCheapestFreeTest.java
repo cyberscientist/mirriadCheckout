@@ -25,29 +25,28 @@ public class ThreeItemsWithCheapestFreeTest {
 
     @Test
     public void testValidations() {
-        long numberOfItemsNeeded = 3;
         Set<Item> itemWithDiscount= Sets.newHashSet(
                 new Item("Item-x", 100),
                 new Item("Item-Y", 50),
                 new Item("Item-z", 20)
         );
 
-        Discount buyThreeCheapestFree = new ThreeItemsWithCheapestFree(itemWithDiscount, purchasedItems, numberOfItemsNeeded);
-        assertTrue(buyThreeCheapestFree.isValidForDiscount());
+        Discount buyThreeCheapestFree = new ThreeItemsWithCheapestFree(itemWithDiscount);
+        assertTrue(buyThreeCheapestFree.isValidForDiscount(purchasedItems));
 
     }
 
     @Test
     public void testGetAmountToDeduct() throws Exception {
-        long numberOfItemsNeeded = 3;
+
         Set<Item> itemWithDiscount= Sets.newHashSet(
                 new Item("testItem1", 100),
                 new Item("testItem2", 50),
                 new Item("testItem3", 20)
         );
-        Discount buyThreeCheapestFree = new ThreeItemsWithCheapestFree(itemWithDiscount, purchasedItems, numberOfItemsNeeded);
+        Discount buyThreeCheapestFree = new ThreeItemsWithCheapestFree(itemWithDiscount);
         try {
-            assertEquals(20, buyThreeCheapestFree.getAmountToDeduct());
+            assertEquals(20, buyThreeCheapestFree.getAmountToDeduct(purchasedItems));
         } catch (notValidForDiscountException e) {
             e.printStackTrace();
         }

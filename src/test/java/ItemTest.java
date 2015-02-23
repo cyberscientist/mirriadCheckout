@@ -21,6 +21,8 @@ public class ItemTest {
         assertTrue(items.contains(item2));
     }
 
+    //FIXME THIS TEST IS NOT TESTING ANYTHING
+
     @Test
     public void testAgain() {
         List<Item> purchasedItems = Lists.newArrayList(

@@ -16,7 +16,6 @@ public class NItemsOfXGetsKItemsYFreeTest {
     private List<Item> itemsPurchased;
     private NItemsOfXGetsKItemsYFree  nItemsOfxGetsKItemsYFree;
     private Set<Item> itemWithDiscount;
-    private long numberOfItemsNeeded;
 
     @Before
     public void setUp() {
@@ -32,20 +31,19 @@ public class NItemsOfXGetsKItemsYFreeTest {
                 new Item("freebie", 3)
         );
 
-        numberOfItemsNeeded = 2;
         itemWithDiscount = Sets.newHashSet( new Item("testItem1", 10) );
-        nItemsOfxGetsKItemsYFree = new NItemsOfXGetsKItemsYFree(itemWithDiscount, itemsPurchased, numberOfItemsNeeded, new Item("freebie", 3), 3);
+        nItemsOfxGetsKItemsYFree = new NItemsOfXGetsKItemsYFree(itemWithDiscount, new Item("freebie", 3), 3);
 
     }
 
     @Test
     public void testIsValidForDiscount() throws Exception {
-         assertTrue(nItemsOfxGetsKItemsYFree.isValidForDiscount());
+         assertTrue(nItemsOfxGetsKItemsYFree.isValidForDiscount(itemsPurchased));
     }
 
 
     @Test
     public void getAmountToDeduct()throws Exception {
-        assertEquals(9, nItemsOfxGetsKItemsYFree.getAmountToDeduct());
+        assertEquals(9, nItemsOfxGetsKItemsYFree.getAmountToDeduct(itemsPurchased));
     }
 }

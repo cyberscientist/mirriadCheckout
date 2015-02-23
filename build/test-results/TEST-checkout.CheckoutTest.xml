@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="checkout.CheckoutTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-02-23T04:32:33" hostname="ali" time="3.633">
+  <properties/>
+  <testcase name="findAllQualifiedDiscountsTest" classname="checkout.CheckoutTest" time="3.633"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

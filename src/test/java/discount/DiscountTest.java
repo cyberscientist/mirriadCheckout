@@ -27,26 +27,16 @@ public class DiscountTest {
 
     @Test
     public void testIsValidForDiscount() throws Exception {
-            long numberOfItemsNeeded = 3;
             Set<Item> itemWithDiscount= Sets.newHashSet( new Item("testItem1", 10) );
-            TwoForOneDiscount twoForOne = new TwoForOneDiscount(itemWithDiscount, itemsPurchased, numberOfItemsNeeded);
-            assertTrue(twoForOne.isValidForDiscount());
+            TwoForOneDiscount twoForOne = new TwoForOneDiscount(itemWithDiscount);
+            assertTrue(twoForOne.isValidForDiscount(itemsPurchased));
     }
 
-    @Test
-    public void testIsValidForDiscountWrongNoItems() throws Exception {
-        itemsPurchased.remove(0);
-        long numberOfItemsNeeded = 3;
-        Set<Item> itemWithDiscount= Sets.newHashSet( new Item("testItem1", 10) );
-        TwoForOneDiscount twoForOne = new TwoForOneDiscount(itemWithDiscount,itemsPurchased,numberOfItemsNeeded);
-        assertFalse(twoForOne.isValidForDiscount());
-    }
 
     @Test
     public void getAmountToDeduct()throws Exception {
-        long numberOfItemsNeeded = 3;
         Set<Item> itemWithDiscount= Sets.newHashSet( new Item("testItem1", 10) );
-        TwoForOneDiscount twoForOne = new TwoForOneDiscount(itemWithDiscount,itemsPurchased,numberOfItemsNeeded);
-        assertEquals(10, twoForOne.getAmountToDeduct());
+        TwoForOneDiscount twoForOne = new TwoForOneDiscount(itemWithDiscount);
+        assertEquals(10, twoForOne.getAmountToDeduct(itemsPurchased));
     }
 }

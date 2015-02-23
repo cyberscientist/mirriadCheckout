@@ -26,11 +26,10 @@ public class TwoForSpacialPriceTest {
 
     @Test
         public void getAmountToDeduct()throws Exception {
-            long numberOfItemsNeeded = 3;
             int amountToDeduct = 5;
             Set<Item> itemWithDiscount= Sets.newHashSet( new Item("testItem1", 10) );
-            Discount twoForSpecialPrice = new TwoForSpacialPrice(itemWithDiscount,itemsPurchased, numberOfItemsNeeded,amountToDeduct);
-            assertEquals(5, twoForSpecialPrice.getAmountToDeduct());
+            Discount twoForSpecialPrice = new TwoForSpacialPrice(itemWithDiscount,amountToDeduct);
+            assertEquals(5, twoForSpecialPrice.getAmountToDeduct(itemsPurchased));
         }
 
 }

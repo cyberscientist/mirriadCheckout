@@ -8,11 +8,16 @@ import java.util.Set;
 
 public abstract class Discount {
     protected Set<Item> itemsForDiscount;
-    protected List<Item> purchasedItems;
 
-    public abstract boolean isValidForDiscount();
+    public long getNumberItemNeeded() {
+        return numberItemNeeded;
+    }
 
-    public abstract int getAmountToDeduct() throws notValidForDiscountException;
+    protected long numberItemNeeded;
+
+    public abstract boolean isValidForDiscount( List<Item> purchasedItems);
+
+    public abstract int getAmountToDeduct( List<Item> purchasedItems) throws notValidForDiscountException;
 
     //FIXME - SHOULD THIS NOT BE THIS.PURCHASEDITEMS??
     public Long getNumberOccurrence(List<Item> purchasedItems) {
@@ -22,4 +27,5 @@ public abstract class Discount {
                 .filter(i -> itemsForDiscount.contains(i))
                 .count();
     }
+
 }

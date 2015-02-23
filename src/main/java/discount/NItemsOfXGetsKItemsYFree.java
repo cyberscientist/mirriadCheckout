@@ -11,31 +11,27 @@ public class NItemsOfXGetsKItemsYFree extends TwoForOneDiscount {
     private int numberOfFreebies;
 
     //FIXME maybe a builderMethod here
-    public NItemsOfXGetsKItemsYFree(Set<Item> itemsForDiscount, List<Item> purchasedItems, long numberItemNeeded, Item freebieItem, int numberOfFreebies) {
-        super(itemsForDiscount, purchasedItems, numberItemNeeded);
+    public NItemsOfXGetsKItemsYFree(Set<Item> itemsForDiscount, Item freebieItem, int numberOfFreebies) {
+        super(itemsForDiscount);
         this.freebieItem = freebieItem;
         this.numberOfFreebies = numberOfFreebies;
     }
 
     @Override
-    public  boolean isValidForDiscount() {
+    public  boolean isValidForDiscount(List<Item> purchasedItems) {
         Validate.notNull(purchasedItems);
 
-        if (getNumberOccurrence(purchasedItems) >= numberItemNeeded && freebieItem !=null && getNumberFreebiesPurchased() >= numberOfFreebies ) {
-            return true;
-        } else {
-            return false;
-        }
+        return getNumberOccurrence(purchasedItems) >= numberItemNeeded && freebieItem != null && getNumberFreebiesPurchased(purchasedItems) >= numberOfFreebies;
 
     }
 
     @Override
-    public int getAmountToDeduct() throws notValidForDiscountException {
-        if (!isValidForDiscount()) {
+    public int getAmountToDeduct(List<Item> purchasedItems) throws notValidForDiscountException {
+        if (!isValidForDiscount(purchasedItems)) {
             throw new notValidForDiscountException("Not Valid For NItemsOfXGetsKItemsYFree Discount");
         }
-        //FIXME long to int --- make sure its  safe casting
-        int setOfFreebies =  castLongToIntSafely(getNumberFreebiesPurchased() / numberOfFreebies) ;
+
+        int setOfFreebies =  castLongToIntSafely(getNumberFreebiesPurchased(purchasedItems) / numberOfFreebies) ;
         int numberOfDiscountedItemsPurchased = castLongToIntSafely(getNumberOccurrence(purchasedItems));
         int numberOfTimesQualified = numberOfDiscountedItemsPurchased / castLongToIntSafely(numberItemNeeded);
 
@@ -51,7 +47,7 @@ public class NItemsOfXGetsKItemsYFree extends TwoForOneDiscount {
         return (int) longNumber;
     }
 
-    private long getNumberFreebiesPurchased() {
+    private long getNumberFreebiesPurchased(List<Item> purchasedItems) {
         return  purchasedItems.stream().filter( i -> i.equals(freebieItem)).count();
     }
 }
