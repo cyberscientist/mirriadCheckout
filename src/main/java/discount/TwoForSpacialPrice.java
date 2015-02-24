@@ -3,17 +3,15 @@ package discount;
 import item.Item;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 public class TwoForSpacialPrice extends TwoForOneDiscount {
     private int amountToDeductForOffer;
-    numberItemNeeded = 2;
 
-    public TwoForSpacialPrice(Set<Item> itemsForDiscount,int amountToDeductForOffer ) {
-        super(itemsForDiscount);
+    public TwoForSpacialPrice(Map<Item, Integer> itemsForDiscount, String name, int amountToDeductForOffer) {
+        super(itemsForDiscount, name);
         this.amountToDeductForOffer = amountToDeductForOffer;
     }
-
 
     @Override
     public int getAmountToDeduct(List<Item> purchasedItems) {

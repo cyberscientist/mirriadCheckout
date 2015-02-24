@@ -1,58 +1,39 @@
 package checkout;
 
 import discount.Discount;
-import discount.notValidForDiscountException;
 import item.Item;
 import org.apache.commons.lang3.Validate;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-/**
- * Created by ali on 17/02/15.
- */
 public class Checkout {
 
     private int totalAfterDiscount;
+    private int totalBeforeDiscount;
 
-
-    //find totalBeforeDiscount
-    public int calculateTotalBeforeDiscount( List<Item> purchasedItems) {
+    public int calculateTotalBeforeDiscount(List<Item> purchasedItems) {
         Validate.notNull(purchasedItems);
 
         final int[] totalBeforeDiscount = {0};
         purchasedItems.stream().forEach((item) -> {
             totalBeforeDiscount[0] += item.getPrice();
+            System.out.println(item.getName() + "     " + item.getPrice());
         });
         return totalBeforeDiscount[0];
     }
 
-    //find which Discounts to apply
-    public Set<Discount> findAllQualifiedDiscounts(List<Item> itemsPurchased, Set<Discount> discountsAvaible) throws notValidForDiscountException {
-        int totalBeforeDiscount = calculateTotalBeforeDiscount(itemsPurchased);
+    public int calculateTotalAfterDiscount(List<Item> purchasedItems, List<Discount> discounts) {
+        totalBeforeDiscount = calculateTotalBeforeDiscount(purchasedItems);
 
-        discountsAvaible.stream().forEach( d -> {
-            d.isValidForDiscount(itemsPurchased);
-            try {
-                totalAfterDiscount = totalBeforeDiscount - d.getAmountToDeduct(itemsPurchased);
-            } catch (notValidForDiscountException e) {
-                e.printStackTrace();
+        discounts.stream().forEach(discount -> {
+            if (discount.isValidForDiscount(purchasedItems)) {
+                System.out.println(discount.getName() + discount.getAmountToDeduct(purchasedItems));
+                totalAfterDiscount -= discount.getAmountToDeduct(purchasedItems);
             }
-            d.getNumberItemNeeded();
-            itemsPurchased.
 
         });
 
-        return getCollect(itemsPurchased, discountsAvaible);
-    }
 
-    private Set<Discount> getCollect(List<Item> itemsPurchased, Set<Discount> discountsAvaible) {
-        return discountsAvaible.stream().filter(d ->
-                        d.isValidForDiscount(itemsPurchased)
-        ).collect(Collectors.toSet());
     }
-
-    //deduct the discounts from total
 
 }

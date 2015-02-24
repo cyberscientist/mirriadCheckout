@@ -4,33 +4,27 @@ import item.Item;
 import org.apache.commons.lang3.Validate;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 public class NItemsOfXGetsKItemsYFree extends TwoForOneDiscount {
-    private Item freebieItem;
-    private int numberOfFreebies;
+    Item freebieItem;
+    int numberOfFreebies;
 
     //FIXME maybe a builderMethod here
-    public NItemsOfXGetsKItemsYFree(Set<Item> itemsForDiscount, Item freebieItem, int numberOfFreebies) {
-        super(itemsForDiscount);
-        this.freebieItem = freebieItem;
-        this.numberOfFreebies = numberOfFreebies;
+    public NItemsOfXGetsKItemsYFree(Map<String, Map<Item, Integer>> itemsForDiscount) {
+        super(itemsForDiscount.get("DISCOUNTED-ITEMS"));
+        this.freebieItem = itemsForDiscount.get("FREEBIE").keySet().stream().findFirst().get();
+        this.numberOfFreebies = itemsForDiscount.get("FREEBIE").values().stream().findFirst().get();
     }
 
     @Override
     public  boolean isValidForDiscount(List<Item> purchasedItems) {
         Validate.notNull(purchasedItems);
-
         return getNumberOccurrence(purchasedItems) >= numberItemNeeded && freebieItem != null && getNumberFreebiesPurchased(purchasedItems) >= numberOfFreebies;
-
     }
 
     @Override
-    public int getAmountToDeduct(List<Item> purchasedItems) throws notValidForDiscountException {
-        if (!isValidForDiscount(purchasedItems)) {
-            throw new notValidForDiscountException("Not Valid For NItemsOfXGetsKItemsYFree Discount");
-        }
-
+    public int getAmountToDeduct(List<Item> purchasedItems) {
         int setOfFreebies =  castLongToIntSafely(getNumberFreebiesPurchased(purchasedItems) / numberOfFreebies) ;
         int numberOfDiscountedItemsPurchased = castLongToIntSafely(getNumberOccurrence(purchasedItems));
         int numberOfTimesQualified = numberOfDiscountedItemsPurchased / castLongToIntSafely(numberItemNeeded);
@@ -50,4 +44,6 @@ public class NItemsOfXGetsKItemsYFree extends TwoForOneDiscount {
     private long getNumberFreebiesPurchased(List<Item> purchasedItems) {
         return  purchasedItems.stream().filter( i -> i.equals(freebieItem)).count();
     }
+
+
 }
