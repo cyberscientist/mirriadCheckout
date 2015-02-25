@@ -1,9 +1,8 @@
 package discount;
 
+import com.google.common.collect.Multiset;
 import item.Item;
 
-import java.util.Comparator;
-import java.util.List;
 import java.util.Map;
 
 
@@ -14,15 +13,15 @@ public class ThreeItemsWithCheapestFree extends TwoForOneDiscount{
     }
 
     @Override
-    public boolean isValidForDiscount(List<Item> purchasedItems) {
+    public boolean isValidForDiscount(Multiset<Item> purchasedItems) {
         long numberOfQualifiedItems = purchasedItems.stream().filter(p -> itemsForDiscount.containsKey(p)).count();
         return ( numberOfQualifiedItems / 3L ) > 0;
     }
 
     @Override
-    public int getAmountToDeduct(List<Item> purchasedItems) {
-        return itemsForDiscount.values().stream()
-                .min(Comparator.comparingInt(Item::getPrice))
+    public int getAmountToDeduct(Multiset<Item> purchasedItems) {
+        return itemsForDiscount.keySet().stream().min((item1, item2) ->
+                Integer.compare(item1.getPrice(), item2.getPrice()))
                 .get()
                 .getPrice();
     }

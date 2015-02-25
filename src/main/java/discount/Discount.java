@@ -1,21 +1,25 @@
 package discount;
 
+import com.google.common.collect.Multiset;
 import item.Item;
 import org.apache.commons.lang3.Validate;
 
-import java.util.List;
 import java.util.Map;
 
 public abstract class Discount {
     protected Map<Item, Integer> itemsForDiscount;
     protected String name;
 
-    public abstract boolean isValidForDiscount( List<Item> purchasedItems);
+    public String getName() {
+        return name;
+    }
 
-    public abstract int getAmountToDeduct(List<Item> purchasedItems);
+    public abstract boolean isValidForDiscount(Multiset<Item> purchasedItems);
+
+    public abstract int getAmountToDeduct(Multiset<Item> purchasedItems);
 
     //FIXME - SHOULD THIS NOT BE THIS.PURCHASEDITEMS??
-    protected Long getNumberOccurrence(List<Item> purchasedItems) {
+    protected Long getNumberOccurrence(Multiset<Item> purchasedItems) {
         Validate.notNull(purchasedItems);
 
         return purchasedItems.stream()

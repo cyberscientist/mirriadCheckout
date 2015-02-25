@@ -1,30 +1,28 @@
 package discount;
 
+import com.google.common.collect.Multiset;
+import com.google.common.collect.Table;
 import item.Item;
 import org.apache.commons.lang3.Validate;
-
-import java.util.List;
-import java.util.Map;
 
 public class NItemsOfXGetsKItemsYFree extends TwoForOneDiscount {
     Item freebieItem;
     int numberOfFreebies;
 
-    //FIXME maybe a builderMethod here
-    public NItemsOfXGetsKItemsYFree(Map<String, Map<Item, Integer>> itemsForDiscount) {
-        super(itemsForDiscount.get("DISCOUNTED-ITEMS"));
-        this.freebieItem = itemsForDiscount.get("FREEBIE").keySet().stream().findFirst().get();
-        this.numberOfFreebies = itemsForDiscount.get("FREEBIE").values().stream().findFirst().get();
+    public NItemsOfXGetsKItemsYFree(Table<String, Item, Integer> itemsForDiscount, String name) {
+        super(itemsForDiscount.row("DISCOUNTED-ITEMS"), name);
+        this.freebieItem = itemsForDiscount.row("FREEBIE").keySet().stream().findFirst().get();
+        this.numberOfFreebies = itemsForDiscount.row("FREEBIE").values().stream().findFirst().get();
     }
 
     @Override
-    public  boolean isValidForDiscount(List<Item> purchasedItems) {
+    public boolean isValidForDiscount(Multiset<Item> purchasedItems) {
         Validate.notNull(purchasedItems);
         return getNumberOccurrence(purchasedItems) >= numberItemNeeded && freebieItem != null && getNumberFreebiesPurchased(purchasedItems) >= numberOfFreebies;
     }
 
     @Override
-    public int getAmountToDeduct(List<Item> purchasedItems) {
+    public int getAmountToDeduct(Multiset<Item> purchasedItems) {
         int setOfFreebies =  castLongToIntSafely(getNumberFreebiesPurchased(purchasedItems) / numberOfFreebies) ;
         int numberOfDiscountedItemsPurchased = castLongToIntSafely(getNumberOccurrence(purchasedItems));
         int numberOfTimesQualified = numberOfDiscountedItemsPurchased / castLongToIntSafely(numberItemNeeded);
@@ -41,7 +39,7 @@ public class NItemsOfXGetsKItemsYFree extends TwoForOneDiscount {
         return (int) longNumber;
     }
 
-    private long getNumberFreebiesPurchased(List<Item> purchasedItems) {
+    private long getNumberFreebiesPurchased(Multiset<Item> purchasedItems) {
         return  purchasedItems.stream().filter( i -> i.equals(freebieItem)).count();
     }
 

@@ -1,34 +1,32 @@
 package discount;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multiset;
 import item.Item;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class TwoForSpacialPriceTest {
-    private List<Item> itemsPurchased;
+    private Multiset<Item> itemsPurchased;
 
     @Before
     public void setUp() {
-        itemsPurchased = Lists.newArrayList(
-                new Item("testItem1", 10),
-                new Item("testItem1", 10),
-                new Item("testItem1", 10)
-        );
+        itemsPurchased = HashMultiset.create();
+        itemsPurchased.add(new Item("testItem1", 10), 3);
     }
 
     @Test
         public void getAmountToDeduct()throws Exception {
             int amountToDeduct = 5;
-            Set<Item> itemWithDiscount= Sets.newHashSet( new Item("testItem1", 10) );
-            Discount twoForSpecialPrice = new TwoForSpacialPrice(itemWithDiscount,amountToDeduct);
+        Map<Item, Integer> itemWithDiscount = Maps.newHashMap();
+        itemWithDiscount.put(new Item("testItem1", 10), 1);
+
+        Discount twoForSpecialPrice = new TwoForSpacialPrice(itemWithDiscount, "Two For Spacial Price", amountToDeduct);
             assertEquals(5, twoForSpecialPrice.getAmountToDeduct(itemsPurchased));
         }
 

@@ -1,12 +1,12 @@
 package discount;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multiset;
 import item.Item;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -14,21 +14,18 @@ import static org.junit.Assert.assertTrue;
 
 public class DiscountTest {
 
-    private List<Item> itemsPurchased;
+    private Multiset<Item> itemsPurchased;
 
     @Before
     public void setUp() {
-        itemsPurchased = Lists.newArrayList(
-                new Item("testItem1", 10),
-                new Item("testItem1", 10),
-                new Item("testItem1", 10)
-        );
+        itemsPurchased = HashMultiset.create();
+        itemsPurchased.add(new Item("testItem1", 10), 3);
     }
 
     @Test
     public void testIsValidForDiscount() throws Exception {
         Map<Item, Integer> itemWithDiscount = Maps.newHashMap();
-        itemWithDiscount.put(new Item("testItem1", 10), 1);
+        itemWithDiscount.put(new Item("testItem1", 10), 3);
         TwoForOneDiscount twoForOne = new TwoForOneDiscount(itemWithDiscount, "2 for 1");
             assertTrue(twoForOne.isValidForDiscount(itemsPurchased));
     }
@@ -37,7 +34,7 @@ public class DiscountTest {
     @Test
     public void getAmountToDeduct()throws Exception {
         Map<Item, Integer> itemWithDiscount = Maps.newHashMap();
-        itemWithDiscount.put(new Item("testItem1", 10), 1);
+        itemWithDiscount.put(new Item("testItem1", 10), 3);
         TwoForOneDiscount twoForOne = new TwoForOneDiscount(itemWithDiscount, "2 for 1");
         assertEquals(10, twoForOne.getAmountToDeduct(itemsPurchased));
     }

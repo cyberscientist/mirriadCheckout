@@ -1,8 +1,8 @@
 package discount;
 
+import com.google.common.collect.Multiset;
 import item.Item;
 
-import java.util.List;
 import java.util.Map;
 
 public class TwoForSpacialPrice extends TwoForOneDiscount {
@@ -14,7 +14,7 @@ public class TwoForSpacialPrice extends TwoForOneDiscount {
     }
 
     @Override
-    public int getAmountToDeduct(List<Item> purchasedItems) {
+    public int getAmountToDeduct(Multiset<Item> purchasedItems) {
         return amountToDeductForOffer;
     }
 }
