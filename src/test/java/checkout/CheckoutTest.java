@@ -87,6 +87,6 @@ public class CheckoutTest {
                 new TwoForOneDiscount(twoForOneDiscountItems, "Two for one")
         );
         checkout.calculateBill(itemsPurchased, discountsAvailable);
-        assertEquals(107, checkout.getTotalAfterDiscount());
+        assertEquals(108, checkout.getTotalAfterDiscount());
     }
 }
